@@ -36,7 +36,6 @@ class Kele
     puts reponse
   end
 
-
   private
   def api_url(endpoint)
     "https://www.bloc.io/api/v1/#{endpoint}"
