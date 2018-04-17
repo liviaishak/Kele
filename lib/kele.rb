@@ -28,12 +28,12 @@ class Kele
 
   def get_messages
     response = self.class.get(api_url("message_threads"), headers: {"authorization" => @auth_token })
-    @messages = JSON.parse(response.body)
+    JSON.parse(response.body)
   end
 
   def create_message(email, recipient_id, token, subject, body)
     response = self.class.post(api_url("messages"), body: { "sender" => email, "recipient_id" => recipient_id, "token" => token, "subject" => subject, "striped-text" => message }, headers: { "authorization" => @auth_token })
-    puts reponse
+    JSON.parse(response.body)
   end
 
   private
