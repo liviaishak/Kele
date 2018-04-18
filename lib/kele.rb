@@ -21,19 +21,22 @@ class Kele
     @user = JSON.parse(response.body)
   end
 
-  def get_mentor_available(mentor_id)
+  def get_mentor_availability(mentor_id)
     response = self.class.get(api_url("mentors/#{mentor_id}/student_availability"), headers: {"authorization" => @auth_token })
     @mentor_availability = JSON.parse(response.body)
   end
 
-  def get_messages
-    response = self.class.get(api_url("message_threads"), headers: {"authorization" => @auth_token })
+  def get_messages(page_number=nil)
+    if page_number
+      response = self.class.get(api_url("message_threads"), body: { page: page_number }, headers: {"authorization" => @auth_token })
+    else
+      response = self.class.get(api_url("message_threads"), headers: {"authorization" => @auth_token })
+    end
     JSON.parse(response.body)
   end
 
-  def create_message(email, recipient_id, token, subject, body)
-    response = self.class.post(api_url("messages"), body: { "sender" => email, "recipient_id" => recipient_id, "token" => token, "subject" => subject, "striped-text" => message }, headers: { "authorization" => @auth_token })
-    JSON.parse(response.body)
+  def create_message(email, recipient_id, subject, message)
+    self.class.post(api_url("messages"), body: { "sender" => email, "recipient_id" => recipient_id, "subject" => subject, "stripped-text" => message }, headers: { "authorization" => @auth_token })
   end
 
   private
